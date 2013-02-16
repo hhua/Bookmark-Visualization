@@ -17,9 +17,3 @@ def meme_factor(board, tnum)
 	data = JSON.parse(thread_data(board, tnum))
 	count_comments(data["posts"])
 end
-
-/
-k b!!!  dsufahfasfd sfdaccccfsdfasd
-daf
-
-fsdf
