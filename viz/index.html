@@ -108,10 +108,10 @@
 
             var band_width = 6;
             var gap = 1;
-            var months = 23;
-            //var month = 16;
+            //var months = 23;
+            var month = 16;
             var num_tags = 41;
-            var angle = 2*Math.PI/(months+1); //angle of every month shown in the arc graph
+            var angle = 2*Math.PI/(month+1); //angle of every month shown in the arc graph
 
             var vis = d3.select("#arc_chart").append("svg")
                          .attr("width", width)
@@ -125,23 +125,23 @@
                 t_x = function(d){
                     r = radius - t_padding;
                     r_1 = angle/2
-                    theda = (d.Year - 1990)*angle-Math.PI/2;
+                    theda = (d.order - 1)*angle-Math.PI/2;
                     return r*Math.cos(theda+r_1);
                 },
                 t_y = function(d){
                     r = radius - 10;
-                    theda = (d.Year - 1990)*angle-Math.PI/2;
+                    theda = (d.order - 1)*angle-Math.PI/2;
                     return r*Math.sin(theda+r_1);
                 };
                 l_x = function(d){
                     r = radius - t_padding;
                     r_1 = angle/2
-                    theda = (d.Year - 1990)*angle-Math.PI/2;
+                    theda = (d.order - 1)*angle-Math.PI/2;
                     return r*Math.cos(theda);
                 },
                 l_y = function(d){
                     r = radius - 10;
-                    theda = (d.Year - 1990)*angle-Math.PI/2;
+                    theda = (d.order - 1)*angle-Math.PI/2;
                     return r*Math.sin(theda);
             };
 
@@ -149,16 +149,16 @@
             //method to draw a single arc
             var arc = d3.svg.arc()
             .startAngle(function(d, i){
-                return (d.Year - 1990 + 1)*angle;
+                return (d.order - 1 + 1)*angle;
             })
             .endAngle(function(d, i){
-                return (d.Year - 1991 + 1)*angle;
+                return (d.order - 1 + 1)*angle;
             })
             .innerRadius(function(d, i){  
-                return (gap + band_width) * (num_tags -1 - d.LastRank) + gap;
+                return (gap + band_width) * (d.ranking - 1) + gap;
             })
             .outerRadius(function(d, i){
-                return (gap + band_width) * (num_tags - d.LastRank);
+                return (gap + band_width) * d.ranking;
             });
 
             //draw the starting line
@@ -172,7 +172,7 @@
                 .attr("d","M 0 0"+"L 0 -500");
 
             //read in data
-            d3.json("chart-data.json", function(json){
+            d3.json("all-tags.json", function(json){
 
                  //add year label
                 vis.selectAll("text")
@@ -184,13 +184,14 @@
                 .attr("text-anchor","middle") //text are central aligned
                 .attr("fill",function(d){return "#666";})
                 .attr("transform", function(d, i){
-                            beta = (d.Year - 1990)*360/24+7.5;
+                            //beta = (d.order - 1)*360/24+7.5;
+                            beta = (d.order - 1)*angle+angle / 2;
                             n = t_x(d);
                             console.log(angle);
                             return "rotate("+beta+","+t_x(d)+","+t_y(d)+")";}
                             )
                 .text(function(d) {
-                            return d.Year; }
+                            return d.month; }
                             );
 
                 //draw arcs
@@ -201,7 +202,7 @@
                     .attr("class", "arc")
                     .attr("fill", "#b9b9b9")
                     .attr("opacity", function(d){
-                        return (1 - d.High/100); //opacity based on the highest rack the artist achieved that year
+                        return d.ranking / 41; //opacity based on the highest rack the artist achieved that year
                     })
                     .attr("d", arc)
                     .on('mouseover', mouseover)
@@ -213,9 +214,9 @@
             function mouseover(e) {
                 vis.selectAll(".arc")
                 .attr("fill","#b9b9b9")
-                .transition().duration(100).attr("fill",function(d, i) { return (d.Artist === e.Artist) ? "#FF2240":"#b9b9b9"; });
-                console.log(e.Artist+"     "+e.Track);
-                write_info(e.Artist, e.Track, e.Album, e.High, e.Year);
+                .transition().duration(100).attr("fill",function(d, i) { return (d.tag === e.tag) ? "#FF2240":"#b9b9b9"; });
+                console.log(e.tag+"     "+e.month);
+                //write_info(e.Artist, e.Track, e.Album, e.High, e.Year); // ??????????
                 return $(document).ready(function(){
                         $(".intro").stop(false, true).fadeIn("fast")
                 });
@@ -231,7 +232,7 @@
                     });
              }
 
-             //the function to write info to black window
+             //the function to write info to black window ???????
             function write_info(artist, track, album, highest, year){
                 $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.search&api_key=36ca02e767da5319c71abe6f2ee4437f&format=json&artist=" + artist + "&callback=?", function(json) {
                     if (json.results.artistmatches.artist.length!=0){
@@ -265,7 +266,7 @@
                     coordinates.push(temp);
                 }
 
-                var rScale = d3.scale.linear().domain([100, 0]).range([0, radius - padding]);
+                var rScale = d3.scale.linear().domain([50, 0]).range([0, radius - padding]);
 
                 var vis_line = d3.select("#line_chart").append("svg")
                              .attr("width", width)
@@ -277,13 +278,13 @@
                 var line = d3.svg.line()
                                      .x(function(d, i){
                                         //console.log(d);
-                                        r = rScale(d.rank);
-                                        alpha = (d.year - 1990)*angle_line-Math.PI/2;
+                                        r = rScale(d.count); // point position
+                                        alpha = (d.order - 1)*angle_line-Math.PI/2;
                                         return r*Math.cos(alpha);
                                      })
                                      .y(function(d){
                                         r = rScale(d.rank);
-                                        alpha = (d.year - 1990)*angle_line-Math.PI/2;
+                                        alpha = (d.order - 1)*angle_line-Math.PI/2;
                                         return r*Math.sin(alpha);
                                      })
                                      .interpolate("cardinal");
@@ -310,7 +311,7 @@
                             .attr("d", coor);
 
                 //add year label
-                d3.json("chart-data.json", function(json){
+                d3.json("all-tags.json", function(json){
                     vis_line.selectAll("text")
                     .data(json)
                     .enter()
@@ -320,21 +321,21 @@
                     .attr("text-anchor","middle") //text are central aligned
                     .attr("fill",function(d){return "#666";})
                     .attr("transform", function(d, i){
-                                beta = (d.Year - 1990)*360/24;
+                                beta = (d.order - 1)*360/24; // ???????????
                                 n = t_x(d);
                                 console.log(angle);
                                 return "rotate("+beta+","+l_x(d)+","+l_y(d)+")";}
                                 )
                     .text(function(d) {
-                                return d.Year; }
+                                return d.month; }
                                 ); 
                 });
                
-                artist = e.Artist;
+                tag = e.tag;
 
                 //draw data lines and points
-                d3.json("artist.json", function(json){
-                        var data = json[artist];
+                d3.json("tag-detail.json", function(json){
+                        var data = json[tag];
                         if(data!=undefined){
                             var path = vis_line.selectAll(".data-line")
                                 .data([data])
@@ -354,12 +355,12 @@
                                     .attr("r", 4)
                                     .attr("cx", function(d, i){
                                         r = rScale(d.rank);
-                                        alpha = (d.year - 1990)*angle_line-Math.PI/2;
+                                        alpha = (d.order - 1)*angle_line-Math.PI/2;
                                         return r*Math.cos(alpha);
                                     })
                                     .attr("cy", function(d){
                                         r = rScale(d.rank);
-                                        alpha = (d.year - 1990)*angle_line-Math.PI/2;
+                                        alpha = (d.order - 1)*angle_line-Math.PI/2;
                                         return r*Math.sin(alpha);
                                     })
                                     .on('mouseover', mouseover_line)
@@ -370,13 +371,13 @@
                 $('#instruct').fadeOut("fast");
                 $('#line_chart').fadeIn();
                 $('#back').fadeIn();
-                $('#back h3').html(e.Artist);
+                $('#back h3').html(e.tag);
                 $('.legend').fadeOut();
 
             }
 
             function mouseover_line(e){
-                write_info(artist, e.track, e.album, e.rank, e.year);
+                //write_info(artist, e.track, e.album, e.rank, e.year);//?????
                 return $(document).ready(function(){
                         $(".intro").stop(false, true).fadeIn("fast")
                 });

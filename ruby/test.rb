@@ -35,8 +35,18 @@ for key in tags.keys
 	end
 end
 
-puts limited_tags.length
+#puts limited_tags.length
 tags = limited_tags
+
+#sort tags
+new_tags = tags.sort_by { |tag, count| count }
+tag_order = {}
+ranking = 1
+for tag in new_tags
+	tag_order[tag[0]] = ranking
+	ranking += 1
+end
+puts tag_order
 
 mapping = {}
 mapping_doc = REXML::Document.new File.new('../data/mapping.xml')
@@ -118,9 +128,13 @@ for tag in tags
 		entry["count"] = date["count"]
 		entry["order"] = date["order"]
 		entry["tag"] = tag[0]
+		entry["ranking"] = tag_order[tag[0]]
 		all_tags.push(entry)
 	end
 end
+
+#sort all_tags by all_count
+#all_tags = all_tags.sort_by { |h| h["all_count"] }
 #puts all_tags
 
 File.open("../viz/all-tags.json","w") do |f|
