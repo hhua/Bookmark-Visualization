@@ -130,6 +130,7 @@
                 },
                 t_y = function(d){
                     r = radius - 10;
+                    //r_1 = angle/2
                     theda = (d.order - 1)*angle-Math.PI/2;
                     return r*Math.sin(theda+r_1);
                 };
@@ -149,7 +150,7 @@
             //method to draw a single arc
             var arc = d3.svg.arc()
             .startAngle(function(d, i){
-                return (d.order - 1 + 1)*angle;
+                return (d.order - 1)*angle;
             })
             .endAngle(function(d, i){
                 return (d.order - 1 + 1)*angle;
@@ -202,14 +203,13 @@
                     .attr("class", "arc")
                     .attr("fill", "#b9b9b9")
                     .attr("opacity", function(d){
-                        return d.ranking / 41; //opacity based on the highest rack the artist achieved that year
+                        return d.ranking / 31; //opacity based on the highest rack the artist achieved that year
                     })
                     .attr("d", arc)
                     .on('mouseover', mouseover)
                     .on('mouseout', mouseout)
                     .on('click', show_details);
             });
-
 
             function mouseover(e) {
                 vis.selectAll(".arc")
@@ -321,7 +321,7 @@
                     .attr("text-anchor","middle") //text are central aligned
                     .attr("fill",function(d){return "#666";})
                     .attr("transform", function(d, i){
-                                beta = (d.order - 1)*360/24; // ???????????
+                                beta = (d.order - 1)*360/17; // ???????????
                                 n = t_x(d);
                                 console.log(angle);
                                 return "rotate("+beta+","+l_x(d)+","+l_y(d)+")";}
