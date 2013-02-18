@@ -120,7 +120,7 @@
                          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
             
-            //method to append label of year
+            //method to append label of month
             var t_padding = 10,
                 t_x = function(d){
                     r = radius - t_padding;
@@ -175,7 +175,7 @@
             //read in data
             d3.json("all-tags.json", function(json){
 
-                 //add year label
+                 //add month label
                 vis.selectAll("text")
                 .data(json)
                 .enter()
@@ -203,7 +203,7 @@
                     .attr("class", "arc")
                     .attr("fill", "#b9b9b9")
                     .attr("opacity", function(d){
-                        return d.ranking / 31; //opacity based on the highest rack the artist achieved that year
+                        return d.count / 3; //opacity based on the highest rack the artist achieved that year
                     })
                     .attr("d", arc)
                     .on('mouseover', mouseover)
@@ -234,7 +234,7 @@
 
              //the function to write info to black window ???????
             function write_info(artist, track, album, highest, year){
-                $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.search&api_key=36ca02e767da5319c71abe6f2ee4437f&format=json&artist=" + artist + "&callback=?", function(json) {
+                $.getJSON("&callback=?", function(json) {
                     if (json.results.artistmatches.artist.length!=0){
                         console.log(json);
                         image = json.results.artistmatches.artist[0].image[2]['#text'];
