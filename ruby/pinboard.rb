@@ -1,7 +1,12 @@
 require 'net/http'
 require 'json'
+require 'open-uri'
 
 #Author hhua.dev@gmail.com
+
+api_token = ARGV
+xml = File.open("./data/suggest.xml");
+puts xml.read();
 
 def count_commnets(comment_array)
 	comment_array.size % 20
