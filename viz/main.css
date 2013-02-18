@@ -1,0 +1,266 @@
+
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	display:block;
+}		
+
+/* Accessible focus treatment
+	people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active {outline: none;}
+
+small {font-size: 85%;}
+
+strong, th {font-weight: bold;}
+
+td, td img {vertical-align: top;} 
+
+
+
+/* force a vertical scrollbar to prevent a jumpy page  ----------------*/
+html {overflow-y: scroll;}
+
+/* global font style   ------------------------------------------------*/
+body {
+	font-family: "Pontano Sans",Helvetica,Arial,sans-serif;
+	font-size:13px;
+}
+
+/* global a style      ------------------------------------------------*/
+a {
+	margin: 0; 
+	padding: 0; 
+	font-size: 100%; 
+	vertical-align: baseline; 
+	background: transparent;
+	text-decoration:none
+}
+
+/* hand cursor on clickable elements ----------------------------------*/
+.clickable,
+label, 
+input[type=button], 
+input[type=submit], 
+button {cursor: pointer;}
+
+/* we use a lot of ULs that aren't bulleted. 
+	don't forget to restore the bullets within content. */
+ul, ol {list-style: none;}
+
+/* we like off-black for text */
+body, select, input, textarea {color: #333;}
+a {color: #03f;}
+a:hover {color: #69f;}
+
+body{background-color: #F5F5F5;}
+
+/* let's clear some floats */
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }  
+.clearfix:after { clear: both; }  
+.clearfix { zoom: 1; } 
+
+
+.main-wrapper{
+	margin-top:25px;
+	margin-left:100px;
+	width:1400px;
+}
+
+
+.left-column{
+	position:relative;
+	float:left;
+	width:1000px;
+}
+
+#arc_chart, #line_chart{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.title{
+	border-bottom:1px dashed #B3B3B3;
+
+}
+
+.title h1{
+	display:block;
+	font-size: 28px;
+	color:#4C4C4C;
+	font-weight: 300;
+	letter-spacing: -1px;
+	margin: .3em 0 .1em 0;
+}
+
+.artist_intro{
+	position:absolute;
+	left:900px;
+	top: 100px;
+	width:420px;
+
+}
+
+.intro{
+	width:400px;
+	height:200px;
+	display:none;
+	font-size:12px;
+	color:#4C4C4C;
+	padding: 10px;
+	background-color:#3F3F3F;
+	color:white;
+}
+
+.cover{
+	float: left;
+	width:200px;
+	height:200px;
+	overflow:hidden;
+	background-color: white;
+	-webkit-box-shadow: 1px 0px 8px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    1px 0px 8px rgba(50, 50, 50, 0.5);
+	box-shadow:         1px 0px 8px rgba(50, 50, 50, 0.5);
+}
+
+.cover img{
+	width:250px;
+}
+
+.info{
+	float:left;
+	margin-left:20px;
+	width:180px;
+}
+
+.row{
+	display: inline-block;
+	padding: 2px 0 10px 0;
+	width: 180px;
+}
+
+.row .left{
+	padding-top:3px;
+	color:#FF2240;
+	font-size: 12px;
+	font-weight: bold;
+	width: 40px;
+	float: left;
+}
+
+.right{
+	width:140px;
+	float:left;
+	font-size:14px;
+}
+
+.rank{
+	width:25px;
+	float:left;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.in{
+	padding-top:3px;
+	font-size:10px;
+	width:15px;
+	float:left;
+}
+
+.y{
+	font-size:14px;
+	float:left;
+}
+
+#artist{
+	font-weight:bold;
+}
+span {
+	display: inline;
+}
+
+h3#track{
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 25px;
+}
+
+.info h4{
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 300;
+	font-style: normal;
+	padding: 3px 0;
+}
+
+#artist, #album, #highest, #year{
+	font-style: italic;
+}
+
+
+#back{
+	width:200px;
+	height:60px;
+	position:relative;
+	display: none;
+}
+
+#back h3{
+	font-weight: 500;
+	font-size: 26px;
+	line-height: 36px;
+}
+
+#back a{
+	color: #FF2240;
+	font-size: 16px;
+}
+
+#back a:hover{
+	color: #E8677D;
+}
+
+#instruct{
+	height:60px;
+
+}
+
+#instruct h3{
+	font-size: 15px;
+	color: #aaa;
+	font-weight: lighter;
+	font-style: italic;
+	line-height: 20px;
+}
+
+.legend{
+	position:absolute;
+	left:900px;
+	bottom:200px;
+	width:420px;
+
+}
+
+.legend .bar{
+	height:6px;
+	background-image:-webkit-gradient(linear,0% 0%, 100% 0%, from(#F5F5F5), to(#b9b9b9));
+	border-bottom:1px solid #aaa;
+}
+
+.legend .annotation{
+	font-size:13px;
+	line-height:16px;
+}
+
+.legend .annotation #zero{
+	float:left;
+}
+
+.legend .annotation #full{
+	float:right;
+}
