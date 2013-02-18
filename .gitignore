@@ -2,3 +2,6 @@
 ##########
 memo.md
 *.swp
+viz/artist.json
+viz/chart-data.json
+
