@@ -51,7 +51,7 @@
             <div class="left-column">
                 <div class="title">
                     <h1>
-                    Personal History of Bookmark Archival from November, 2011 to February, 2013</h1>
+                    Personal History of Pinboard Archival from November, 2011 to February, 2013</h1>
                 </div>
                 <div id="arc_chart"></div>
                 <div id="line_chart"></div>
@@ -60,11 +60,11 @@
             <div class="artist_intro">
                 <div id="back">
                     <h3></h3>
-                    <a href="#">Back to All Artists</a>
+                    <a href="#">Back to All Tags</a>
                 </div>
                 <div id="instruct">
-                    <h3>Click the arc to see chart history of one artist</h3>
-                    <h3>Chart history from Billboard Hot 100</h3>
+                    <h3>Click the arc to see archival history of one tag</h3>
+                    <h3>Tag variation from personal Pinboard.in</h3>
                 </div>
                 <div class="intro">
                     <div class="cover">
@@ -108,9 +108,10 @@
 
             var band_width = 6;
             var gap = 1;
-            var years = 23;
-            var num_artists = 47;
-            var angle = 2*Math.PI/(years+1); //angle of every year shown in the arc graph
+            var months = 23;
+            //var month = 16;
+            var num_tags = 41;
+            var angle = 2*Math.PI/(months+1); //angle of every month shown in the arc graph
 
             var vis = d3.select("#arc_chart").append("svg")
                          .attr("width", width)
@@ -154,10 +155,10 @@
                 return (d.Year - 1991 + 1)*angle;
             })
             .innerRadius(function(d, i){  
-                return (gap + band_width) * (num_artists -1 - d.LastRank) + gap;
+                return (gap + band_width) * (num_tags -1 - d.LastRank) + gap;
             })
             .outerRadius(function(d, i){
-                return (gap + band_width) * (num_artists - d.LastRank);
+                return (gap + band_width) * (num_tags - d.LastRank);
             });
 
             //draw the starting line
@@ -255,11 +256,11 @@
 
             function show_details(e){
                 var padding = 50;
-                var angle_line = 2*Math.PI/(years+1); //angle of every year shown in the line graph
+                var angle_line = 2*Math.PI/(months+1); //angle of every year shown in the line graph
 
                 var coordinates = [];
                 var temp = [];
-                for(i = 0; i < years; i++){
+                for(i = 0; i < months; i++){
                     temp = [i, i];
                     coordinates.push(temp);
                 }
