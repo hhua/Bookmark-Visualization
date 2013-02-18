@@ -67,35 +67,19 @@
                     <h3>Tag variation from personal Pinboard.in</h3>
                 </div>
                 <div class="intro">
-                    <div class="cover">
-                        <img />
-                    </div>
                     <div class="info">
-                        <div class="track row">
-                            <h3 id="track"></h3>
+                        <div>
+                            <h2 id="tag"></h2>
                         </div>
-                        <div class="artist row">
-                            <div class="left">by</div>
-                            <div class="right" id="artist"></div>
-                        </div>
-                        <div class="album row">
-                            <div class="left">from</div>
-                            <div class="right" id="album"></div>
-                        </div>
-                        <div class="chart row">
-                            <div class="left">hits</div>
-                            <div class="rank" id="highest"></div>
-                            <div class="in">in</div>
-                            <div class="y" id="year"></div>
+                        <div id ="urls">
+
                         </div>
                     </div>
                 </div>
             </div>
             <div class="legend">
-                    <div class="bar"></div>
-                    <div class="annotation">
-                        <p id="zero">No.100</p>
-                        <p id="full">No.1</p>
+                    <div id="annotation" class="annotation">
+                        <p id="all_count"></p>
                     </div>
             </div>
         </div>
@@ -212,10 +196,12 @@
             });
 
             function mouseover(e) {
+                var color = "" + get_random_color();
                 vis.selectAll(".arc")
-                .attr("fill","#b9b9b9")
-                .transition().duration(100).attr("fill",function(d, i) { return (d.tag === e.tag) ? "#FF2240":"#b9b9b9"; });
+                .attr("fill", "#b9b9b9")
+                .transition().duration(100).attr("fill",function(d, i) { return (d.tag === e.tag) ? color:"#b9b9b9"; });
                 console.log(e.tag+"     "+e.month);
+                tag = e.tag;
                 //write_info(e.Artist, e.Track, e.Album, e.High, e.Year); // ??????????
                 return $(document).ready(function(){
                         $(".intro").stop(false, true).fadeIn("fast")
@@ -233,27 +219,25 @@
              }
 
              //the function to write info to black window ???????
-            function write_info(artist, track, album, highest, year){
-                $.getJSON("&callback=?", function(json) {
-                    if (json.results.artistmatches.artist.length!=0){
-                        console.log(json);
-                        image = json.results.artistmatches.artist[0].image[2]['#text'];
-                        if(artist === 'LL Cool J'){
-                            image = 'http://userserve-ak.last.fm/serve/500/31915523/LL+Cool+J++1986.jpg';
+            function write_info(){
+                $.getJSON("tag-post.json", function(data){
+                    for(var key in data){
+                        if(key === tag){
+                            $.each(key, function(i,s){
+                                var href = s.href;
+                                var description = s.description;
+                                $('#urls').append('<div><a href="' + href + '">' + href + '</a></div><div>' + description + '</div>');
+                            });
                         }
-                        $('.cover img').attr('src', image);
                     }
                 });
                 
-                        
-                $('#track').html(track);
-                $('#artist').html(artist);
-                $('#album').html(album);
-                $('#highest').html(highest);
-                $('#year').html(year);
+                //$('#tag').html(tag_name);
+                //$('#urls').html(urls);
             }
 
             var artist; //global variable for the details view
+            var tag;
 
             function show_details(e){
                 var padding = 50;
@@ -389,7 +373,14 @@
                 });
             }
 
-
+            function get_random_color() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.round(Math.random() * 15)];
+                }   
+                return color;
+            }
         </script>
     </body>
 </html>
